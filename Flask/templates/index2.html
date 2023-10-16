@@ -1,0 +1,38 @@
+<!-- ajax 방식으로 서버에 데이터 전송-->
+
+<!DOCTYPE html>
+<head>
+    <!-- 외부 js를 참조하여 jQuery를 바로 사용할수 있게 처리 -->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <fieldset>
+            <textarea rows = "10" cols = "30" name = "ori_text"></textarea>
+            <br>
+            <button id = 'detectBtn'>"언어감지"</button>
+            <p>언어 감지 결과: <span id = "detect_lang_code"></span><p>
+        </fieldset>
+    </div>
+    <script>
+        $('#detectBtn').on('click', () => {
+            console.log('언어 감지 버튼 클릭')
+            let ori_text = $('[name = ori_text]').val()
+            console.log(ori_text)
+            $('[name = ori_text]').val('')
+            $.post({
+                url: '/ssg',
+                data: 'ori_text=' + ori_text,
+                dataType: 'json',
+                success: (res) => {
+                    console.log('성공', res)
+                    $('#detect_lang_code').html(res.ko)
+                },
+                error: (err) => {
+                    console.log('실패', err)
+                }
+            })
+        })
+    </script>
+</body>
+</html>
